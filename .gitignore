@@ -1,0 +1,9 @@
+node_modules/
+data/outputs/*
+data/requests/*
+data/uploads/*
+!data/outputs/.gitkeep
+!data/requests/.gitkeep
+!data/uploads/.gitkeep
+.env
+QA_Log.md

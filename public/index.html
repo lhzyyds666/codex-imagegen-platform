@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Codex Imagegen Studio</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2310110f'/%3E%3Cpath d='M16 42 30 14l18 36H14l8-8 6 6h10L30 30l-9 18' fill='%23ffc857'/%3E%3Ccircle cx='46' cy='18' r='6' fill='%235bd8d0'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="studio-header">
+        <div>
+          <p class="eyebrow">Codex Imagegen</p>
+          <h1>Studio</h1>
+        </div>
+        <div class="header-actions">
+          <span id="apiBadge" class="status-pill">检测中</span>
+          <button id="manualBtn" type="button">说明书</button>
+          <button id="copyBtn" type="button">复制提示词</button>
+        </div>
+      </header>
+
+      <section class="generator-grid" aria-label="生成参数">
+        <section class="tool-panel prompt-card">
+          <div class="panel-head">
+            <h2>输入</h2>
+            <span id="modeBadge" class="mini-pill">文生图</span>
+          </div>
+          <label class="field">
+            <span>主提示词</span>
+            <textarea id="prompt" rows="5" placeholder="例如：把参考图改成冷色调赛博朋克海报，保留主体姿势和轮廓"></textarea>
+          </label>
+          <label class="upload-box" for="refImage">
+            <input id="refImage" type="file" accept="image/png,image/jpeg,image/webp">
+            <span>参考图 / 图生图</span>
+            <strong id="refImageName">点击选择 PNG、JPG 或 WebP</strong>
+          </label>
+          <div id="refPreview" class="ref-preview empty-preview">未选择参考图</div>
+        </section>
+
+        <section class="tool-panel compact-panel">
+          <div class="panel-head">
+            <h2>核心参数</h2>
+            <span id="promptStats">0 字符</span>
+          </div>
+          <div class="compact-grid">
+            <label class="field"><span>用途</span><select id="useCase">
+              <option value="stylized-concept">风格概念</option>
+              <option value="photorealistic-natural">写实自然</option>
+              <option value="product-mockup">产品图</option>
+              <option value="ui-mockup">UI Mockup</option>
+              <option value="infographic-diagram">信息图</option>
+              <option value="scientific-educational">科研/教学</option>
+              <option value="ads-marketing">广告营销</option>
+              <option value="logo-brand">Logo/品牌</option>
+            </select></label>
+            <label class="field"><span>风格</span><select id="stylePreset">
+              <option value="cinematic">电影感</option>
+              <option value="photoreal">写实</option>
+              <option value="editorial">杂志大片</option>
+              <option value="product">商业产品</option>
+              <option value="anime">动漫插画</option>
+              <option value="ui-mockup">UI 高保真</option>
+              <option value="diagram">图解</option>
+              <option value="vector-friendly">矢量友好</option>
+            </select></label>
+            <label class="field"><span>尺寸</span><select id="size">
+              <option value="auto">auto</option>
+              <option value="1024x1024">1024 x 1024</option>
+              <option value="1536x1024">1536 x 1024</option>
+              <option value="1024x1536">1024 x 1536</option>
+              <option value="2048x2048">2048 x 2048</option>
+              <option value="2048x1152">2048 x 1152</option>
+              <option value="3840x2160">3840 x 2160</option>
+              <option value="2160x3840">2160 x 3840</option>
+            </select></label>
+            <label class="field"><span>质量</span><select id="quality">
+              <option value="auto">auto</option>
+              <option value="low">low</option>
+              <option value="medium">medium</option>
+              <option value="high">high</option>
+            </select></label>
+            <label class="field"><span>格式</span><select id="outputFormat">
+              <option value="png">png</option>
+              <option value="jpeg">jpeg</option>
+              <option value="webp">webp</option>
+            </select></label>
+            <label class="field"><span>变体</span><input id="variations" type="number" min="1" max="4" value="1"></label>
+            <label class="field range-field"><span>压缩</span><input id="outputCompression" type="range" min="0" max="100" value="85"></label>
+            <label class="toggle-line"><input id="transparent" type="checkbox"><span>透明背景</span></label>
+          </div>
+          <div class="segmented" role="group" aria-label="背景">
+            <label><input type="radio" name="background" value="default" checked><span>默认</span></label>
+            <label><input type="radio" name="background" value="auto"><span>auto</span></label>
+            <label><input type="radio" name="background" value="opaque"><span>opaque</span></label>
+          </div>
+          <input id="model" type="hidden" value="gpt-image-2">
+        </section>
+
+        <section class="tool-panel detail-card">
+          <div class="panel-head">
+            <h2>细化</h2>
+            <span class="mini-pill">全部可见</span>
+          </div>
+          <div class="detail-grid">
+            <label class="field"><span>主体</span><input id="subject" placeholder="人物、产品、场景核心"></label>
+            <label class="field"><span>场景</span><input id="scene" placeholder="室内、街道、实验室"></label>
+            <label class="field"><span>构图</span><input id="composition" placeholder="近景、居中、俯视"></label>
+            <label class="field"><span>镜头</span><input id="camera" placeholder="35mm、微距、长焦"></label>
+            <label class="field"><span>光照</span><input id="lighting" placeholder="柔光、逆光、棚拍"></label>
+            <label class="field"><span>情绪</span><input id="mood" placeholder="冷静、温暖、梦幻"></label>
+            <label class="field"><span>色彩</span><input id="palette" placeholder="黑白红点缀、青绿暖金"></label>
+            <label class="field"><span>精确文字</span><input id="exactText" placeholder="图片里必须出现的原文"></label>
+            <label class="field"><span>补充风格</span><input id="styleNotes" placeholder="材质、年代、参考语汇"></label>
+            <label class="field"><span>不要出现</span><input id="negative" placeholder="水印、低清、杂乱背景"></label>
+            <label class="field wide"><span>资产用途</span><input id="assetType" placeholder="网页 hero、论文图、头像、海报"></label>
+          </div>
+          <div class="action-row">
+            <button id="composeBtn" type="button">生成提示词</button>
+            <button id="queueBtn" type="button">加入自动队列</button>
+            <button id="codexBtn" type="button" class="primary">Codex 生成</button>
+            <button id="apiBtn" type="button">API 生成</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="workspace-grid" aria-label="工作区">
+        <section class="tool-panel prompt-panel">
+          <div class="panel-head">
+            <h2>最终提示词</h2>
+          </div>
+          <pre id="promptPreview"></pre>
+        </section>
+
+        <section class="tool-panel progress-panel">
+          <div class="panel-head">
+            <h2>进度</h2>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-track"><div id="progressFill"></div></div>
+          <div id="statusText" class="status-text">准备就绪</div>
+          <div id="eventLog" class="event-log"></div>
+        </section>
+
+        <section class="tool-panel gallery-panel">
+          <div class="panel-head">
+            <h2>输出</h2>
+            <button id="refreshBtn" type="button">刷新</button>
+          </div>
+          <div id="gallery" class="gallery"></div>
+        </section>
+
+        <section class="tool-panel history-panel">
+          <div class="panel-head">
+            <h2>自动队列</h2>
+            <span id="requestCount">0</span>
+          </div>
+          <div id="requests" class="request-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="manualDialog" class="manual-dialog" aria-labelledby="manualTitle">
+      <div class="manual-sheet">
+        <div class="manual-head">
+          <div>
+            <p class="eyebrow">Parameter Guide</p>
+            <h2 id="manualTitle">说明书</h2>
+          </div>
+          <button id="manualClose" type="button" aria-label="关闭说明书">关闭</button>
+        </div>
+
+        <div class="manual-grid">
+          <article class="manual-card">
+            <h3>输入</h3>
+            <dl>
+              <dt>主提示词</dt>
+              <dd>你真正想要的画面。写主体、动作、场景、用途，比只写风格更稳定。</dd>
+              <dt>参考图 / 图生图</dt>
+              <dd>上传后会自动走图生图。适合重绘、换风格、保留构图或主体身份。</dd>
+              <dt>最终提示词</dt>
+              <dd>平台把你的各个参数合成为真正发给模型的完整指令。</dd>
+            </dl>
+          </article>
+
+          <article class="manual-card">
+            <h3>核心参数</h3>
+            <dl>
+              <dt>用途</dt>
+              <dd>告诉平台这张图最终拿来干什么，比如产品图、论文图、Logo 或信息图。</dd>
+              <dt>风格</dt>
+              <dd>控制整体视觉方向，比如电影感、写实、动漫、商业产品或矢量友好。</dd>
+              <dt>尺寸</dt>
+              <dd>auto 让模型自己选尺寸；固定尺寸会同时影响比例和清晰度。</dd>
+              <dt>质量</dt>
+              <dd>auto 由模型判断；high 更精细但更慢，low 更快但细节少。</dd>
+              <dt>格式</dt>
+              <dd>PNG 适合清晰图和文字；JPEG 适合照片；WebP 文件更小。</dd>
+            </dl>
+          </article>
+
+          <article class="manual-card">
+            <h3>输出控制</h3>
+            <dl>
+              <dt>变体</dt>
+              <dd>一次生成几张候选图。数量越多，等待时间和额度消耗越高。</dd>
+              <dt>压缩</dt>
+              <dd>主要影响 JPEG / WebP 的体积和画质，数值越高通常越清晰也越大。</dd>
+              <dt>透明背景</dt>
+              <dd>要求生成可抠图/透明背景倾向的图；适合贴纸、图标、产品主体。</dd>
+              <dt>默认 / auto / opaque</dt>
+              <dd>默认是不额外指定背景；auto 让模型决定背景策略；opaque 明确要求不透明背景。</dd>
+            </dl>
+          </article>
+
+          <article class="manual-card">
+            <h3>细化项</h3>
+            <dl>
+              <dt>主体 / 场景</dt>
+              <dd>主体写“画谁/画什么”，场景写“在哪里”。这两项最影响画面内容。</dd>
+              <dt>构图 / 镜头</dt>
+              <dd>构图控制远近和摆放；镜头控制视角、焦段、微距、俯拍等摄影感。</dd>
+              <dt>光照 / 情绪 / 色彩</dt>
+              <dd>控制画面的气氛。比如柔光、冷静、黑白红点缀会显著改变观感。</dd>
+              <dt>精确文字</dt>
+              <dd>图片里必须出现的文字。模型仍可能写错，短词比长句更可靠。</dd>
+              <dt>不要出现</dt>
+              <dd>负面约束。适合排除水印、低清、杂乱背景、变形手等问题。</dd>
+            </dl>
+          </article>
+
+          <article class="manual-card wide">
+            <h3>生成方式</h3>
+            <dl>
+              <dt>生成提示词</dt>
+              <dd>只刷新最终提示词，不消耗生图额度。</dd>
+              <dt>加入自动队列</dt>
+              <dd>把任务排进本地队列，平台会按顺序自动调用 Codex 生图。</dd>
+              <dt>Codex 生成</dt>
+              <dd>立即调用本机 Codex 登录额度生图，并在进度区显示执行状态。</dd>
+              <dt>API 生成</dt>
+              <dd>使用 OPENAI_API_KEY 直连 Images API；没有配置密钥时按钮会禁用。</dd>
+            </dl>
+          </article>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

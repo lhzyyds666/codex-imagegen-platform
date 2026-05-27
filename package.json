@@ -1,0 +1,21 @@
+{
+  "name": "codex-imagegen-platform",
+  "version": "0.1.0",
+  "description": "Local Codex image generation studio with parameters, image-to-image, queue, progress, and gallery management.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check public/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lhzyyds666/codex-imagegen-platform.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "gpt-image-2-skill": "0.6.7"
+  }
+}
