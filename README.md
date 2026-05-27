@@ -30,7 +30,7 @@
 ## Requirements
 
 - Node.js 20+
-- 已登录的 Codex 本机状态：`~/.codex/auth.json`
+- 已登录的 Codex 本机状态：`~/.codex/auth.json`，或设置了 `CODEX_HOME/auth.json`
 - Windows、macOS、Linux 均可运行；本项目在 Windows + PowerShell 下开发和验证
 
 > Codex provider 依赖社区工具和 Codex/ChatGPT 私有后端行为，不是 OpenAI 官方公开 Images API。后续能力可能受账号状态、后端变化或工具版本影响。

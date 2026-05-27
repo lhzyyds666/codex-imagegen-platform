@@ -246,6 +246,21 @@ async function fileExists(filePath) {
   }
 }
 
+function codexAuthCandidates() {
+  return [
+    process.env.CODEX_HOME ? path.join(process.env.CODEX_HOME, "auth.json") : "",
+    process.env.USERPROFILE ? path.join(process.env.USERPROFILE, ".codex", "auth.json") : "",
+    process.env.HOME ? path.join(process.env.HOME, ".codex", "auth.json") : ""
+  ].filter(Boolean);
+}
+
+async function hasCodexAuth() {
+  for (const authPath of codexAuthCandidates()) {
+    if (await fileExists(authPath)) return true;
+  }
+  return false;
+}
+
 function extensionFromMime(mimeType, fallbackName = "") {
   const lower = String(mimeType || "").toLowerCase();
   if (lower.includes("jpeg") || lower.includes("jpg")) return "jpg";
@@ -1028,7 +1043,7 @@ async function handleApi(req, res) {
   const url = new URL(req.url, `http://${req.headers.host}`);
   if (req.method === "GET" && url.pathname === "/api/config") {
     const codexSkillInstalled = await fileExists(gptImageSkillScript);
-    const codexAuthReady = await fileExists(path.join(process.env.USERPROFILE || "", ".codex", "auth.json"));
+    const codexAuthReady = await hasCodexAuth();
     return json(res, 200, {
       openaiApiReady: Boolean(process.env.OPENAI_API_KEY),
       codexSkillReady: codexSkillInstalled && codexAuthReady,
