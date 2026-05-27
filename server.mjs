@@ -197,6 +197,7 @@ function buildCodexInstruction(params, prompt) {
     "## Parameters",
     "",
     `- model preference: ${params.model || "codex built-in default"}`,
+    `- aspect ratio: ${params.aspect || "auto"}`,
     `- size: ${params.size || "auto"}`,
     `- quality: ${params.quality || "auto"}`,
     `- output format: ${params.outputFormat || "png"}`,

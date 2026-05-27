@@ -65,15 +65,26 @@
               <option value="diagram">图解</option>
               <option value="vector-friendly">矢量友好</option>
             </select></label>
+            <label class="field"><span>比例</span><select id="aspect">
+              <option value="auto">auto</option>
+              <option value="1:1">1:1 方图</option>
+              <option value="16:9">16:9 横屏</option>
+              <option value="9:16">9:16 竖屏</option>
+              <option value="3:2">3:2 横图</option>
+              <option value="2:3">2:3 竖图</option>
+            </select></label>
             <label class="field"><span>尺寸</span><select id="size">
               <option value="auto">auto</option>
-              <option value="1024x1024">1024 x 1024</option>
-              <option value="1536x1024">1536 x 1024</option>
-              <option value="1024x1536">1024 x 1536</option>
-              <option value="2048x2048">2048 x 2048</option>
-              <option value="2048x1152">2048 x 1152</option>
-              <option value="3840x2160">3840 x 2160</option>
-              <option value="2160x3840">2160 x 3840</option>
+              <option value="1024x1024">1024 x 1024 · 1:1</option>
+              <option value="2048x2048">2048 x 2048 · 1:1</option>
+              <option value="1536x1024">1536 x 1024 · 3:2</option>
+              <option value="1024x1536">1024 x 1536 · 2:3</option>
+              <option value="1920x1080">1920 x 1080 · 16:9</option>
+              <option value="2048x1152">2048 x 1152 · 16:9</option>
+              <option value="3840x2160">3840 x 2160 · 4K 16:9</option>
+              <option value="1080x1920">1080 x 1920 · 9:16</option>
+              <option value="1152x2048">1152 x 2048 · 9:16</option>
+              <option value="2160x3840">2160 x 3840 · 4K 9:16</option>
             </select></label>
             <label class="field"><span>质量</span><select id="quality">
               <option value="auto">auto</option>
@@ -191,8 +202,10 @@
               <dd>告诉平台这张图最终拿来干什么，比如产品图、论文图、Logo 或信息图。</dd>
               <dt>风格</dt>
               <dd>控制整体视觉方向，比如电影感、写实、动漫、商业产品或矢量友好。</dd>
+              <dt>比例</dt>
+              <dd>先定画面方向，比如 16:9 横屏、9:16 竖屏或 1:1 方图；会写进最终提示词。</dd>
               <dt>尺寸</dt>
-              <dd>auto 让模型自己选尺寸；固定尺寸会同时影响比例和清晰度。</dd>
+              <dd>auto 让模型自己选尺寸；固定尺寸会同时影响像素、比例和清晰度，4K 竖屏可选 2160 x 3840。</dd>
               <dt>质量</dt>
               <dd>auto 由模型判断；high 更精细但更慢，low 更快但细节少。</dd>
               <dt>格式</dt>

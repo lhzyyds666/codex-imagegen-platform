@@ -3,6 +3,7 @@ const fields = [
   "useCase",
   "stylePreset",
   "model",
+  "aspect",
   "size",
   "quality",
   "outputFormat",
