@@ -1,0 +1,7 @@
+interface:
+  display_name: "Image Generation"
+  short_description: "Generate, edit, upscale, and QA images"
+  default_prompt: "Use $image-generation to generate or repair a high-quality image from my prompt or source artifact."
+
+policy:
+  allow_implicit_invocation: true

@@ -15,6 +15,7 @@
 - **参数说明书**：页面内置说明书，解释尺寸、质量、压缩、背景、变体等选项。
 - **输出管理**：生成图自动保存到 `data/outputs/`，页面支持打开、保存、删除。
 - **API 备用模式**：设置 `OPENAI_API_KEY` 后可直接走 OpenAI Images API。
+- **内置 Codex Skill**：`skills/image-generation/` 提供可复用的生图工作流和环境检查。
 
 ## Preview
 
@@ -41,6 +42,7 @@
 git clone https://github.com/lhzyyds666/codex-imagegen-platform.git
 cd codex-imagegen-platform
 npm install
+npm run check:image-skill
 npm start
 ```
 
@@ -109,6 +111,11 @@ flowchart LR
 │  ├─ outputs/      # generated images, ignored by git
 │  ├─ uploads/      # reference image cache, ignored by git
 │  └─ requests/     # legacy/request records, ignored by git
+├─ skills/
+│  └─ image-generation/
+│     ├─ SKILL.md
+│     ├─ agents/openai.yaml
+│     └─ scripts/check-env.mjs
 ├─ server.mjs
 ├─ package.json
 └─ README.md
@@ -118,9 +125,21 @@ flowchart LR
 
 ```powershell
 npm start
+npm run check
+npm run check:image-skill
 node --check server.mjs
 node --check public/app.js
 ```
+
+## Bundled Skill
+
+The reusable Codex skill lives at `skills/image-generation/`. Its environment check is intentionally dependency-free:
+
+```powershell
+node skills/image-generation/scripts/check-env.mjs . --strict
+```
+
+The same skill is also published separately at `https://github.com/lhzyyds666/image-generation-skill`.
 
 ## Notes
 

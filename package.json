@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "check": "node --check server.mjs && node --check public/app.js"
+    "check": "node --check server.mjs && node --check public/app.js",
+    "check:image-skill": "node skills/image-generation/scripts/check-env.mjs . --strict"
   },
   "repository": {
     "type": "git",
