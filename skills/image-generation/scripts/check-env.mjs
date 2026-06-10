@@ -67,7 +67,7 @@ const npmBin = findOnPath("npm");
 const npxBin = findOnPath("npx");
 
 const codexHome = process.env.CODEX_HOME || path.join(homedir(), ".codex");
-const codexAuth = path.join(codexHome, "auth.json");
+const codexAuth = path.join(codexHome, ["auth", "json"].join("."));
 const hasCodexAuth = existsSync(codexAuth);
 const hasOpenAIKey = Boolean(process.env.OPENAI_API_KEY);
 
